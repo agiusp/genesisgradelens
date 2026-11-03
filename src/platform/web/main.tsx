@@ -1,24 +1,25 @@
-// Bookmark build: runs inside a signed-in Genesis tab. Renders GenesisGradeLens in a full-screen
-// panel isolated with Shadow DOM, and reads Genesis pages from the same tab (same origin, so the
-// student's existing Genesis login is used; no Genesis password ever reaches GenesisGradeLens).
+// All-in-one bookmark build: this whole file (bundled) lives inside the ★ GradeLens bookmark and
+// runs in a signed-in Genesis tab. Genesis's signed-in pages only allow scripts and connections
+// to Genesis itself, so this code makes no outside connections: it reads Genesis pages from the
+// same tab (using the existing Genesis login; no Genesis password ever reaches GenesisGradeLens),
+// and renders in a full-screen panel isolated with Shadow DOM.
 
 import { render } from 'preact';
-import { AUTH } from '../../config/auth';
+import iconUrl from '../../assets/icon-48.png'; // inlined as a data: URL (Genesis allows data: images)
 import type { GenesisTransport } from '../../genesis/transport';
 import { App } from '../../ui/App';
-import { AuthGate } from '../../ui/AuthGate';
 import themeCss from '../../ui/theme.css?inline';
 import stylesCss from '../../ui/styles.css?inline';
 import { detectPortal, districtFor, shadowCss } from './host';
 
 declare global {
   interface Window {
-    __ggl?: { toggle: () => void };
+    __ggl?: { toggle: () => void; version: string };
   }
 }
 
-const SITE = new URL('.', (document.currentScript as HTMLScriptElement | null)?.src ?? location.href).href;
-const ICON = new URL('icons/icon-48.png', SITE).href;
+declare const __GGL_VERSION__: string;
+const SITE = 'https://agiusp.github.io/genesisgradelens/';
 
 const sameOrigin: GenesisTransport = {
   async get(url) {
@@ -39,7 +40,7 @@ function mount() {
   style.textContent =
     shadowCss(themeCss + '\n' + stylesCss) +
     `\n:host{all:initial}\n.ggl-body{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch}\n` +
-    `.ggl-body .shell{min-height:100%}`;
+    `.ggl-body .shell{min-height:100%}\n.ggl-version{color:var(--chrome-link);font-size:.75rem;opacity:.8}`;
   shadow.appendChild(style);
 
   const body = document.createElement('div');
@@ -54,7 +55,7 @@ function mount() {
     document.documentElement.style.overflow = open ? 'hidden' : prevOverflow;
   };
   setOpen(true);
-  window.__ggl = { toggle: () => setOpen(hostEl.style.display === 'none') };
+  window.__ggl = { toggle: () => setOpen(hostEl.style.display === 'none'), version: __GGL_VERSION__ };
 
   const close = () => setOpen(false);
   const scrollTop = () => body.scrollTo(0, 0);
@@ -62,35 +63,29 @@ function mount() {
 
   render(
     active ? (
-      <AuthGate config={AUTH} accountUrl={new URL('account.html', SITE).href} iconUrl={ICON}>
-        {(session, signOut) => (
-          <App
-            transport={sameOrigin}
-            district={districtFor(active)}
-            iconUrl={ICON}
-            scrollTop={scrollTop}
-            headerActions={
-              <>
-                {session && (
-                  <button class="topbar-button" onClick={signOut} title={`Signed in as ${session.email}`}>
-                    Sign out
-                  </button>
-                )}
-                <button class="topbar-button" onClick={close} aria-label="Close GenesisGradeLens">
-                  Close ✕
-                </button>
-              </>
-            }
-          />
-        )}
-      </AuthGate>
+      <App
+        transport={sameOrigin}
+        district={districtFor(active)}
+        iconUrl={iconUrl}
+        scrollTop={scrollTop}
+        headerActions={
+          <>
+            <span class="ggl-version" title={`Get updates at ${SITE}`}>
+              v{__GGL_VERSION__}
+            </span>
+            <button class="topbar-button" onClick={close} aria-label="Close GenesisGradeLens">
+              Close ✕
+            </button>
+          </>
+        }
+      />
     ) : (
       <div class="shell">
         <main class="content">
           <section class="card">
             <h2>Open Genesis first</h2>
             <p>
-              Sign in to Genesis (for Summit students: <strong>students.summit.k12.nj.us</strong>), then tap the GenesisGradeLens
+              Sign in to Genesis (for Summit students: <strong>students.summit.k12.nj.us</strong>), then click the ★ GradeLens
               bookmark again on that page.
             </p>
             <button class="button" onClick={close}>
@@ -104,4 +99,6 @@ function mount() {
   );
 }
 
-mount();
+// Clicking the bookmark again toggles the panel instead of opening a second one.
+if (window.__ggl) window.__ggl.toggle();
+else mount();

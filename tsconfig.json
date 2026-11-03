@@ -20,9 +20,6 @@
   },
   "include": [
     "src",
-    "web",
-    "vite.config.ts",
-    "vite.web.config.ts",
-    "vite.site.config.ts"
+    "web"
   ]
 }

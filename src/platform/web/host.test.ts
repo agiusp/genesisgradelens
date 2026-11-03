@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { bookmarkletFor, detectPortal, districtFor, shadowCss } from './host';
+import { bookmarkletFromCode, detectPortal, districtFor, shadowCss } from './host';
 
 describe('detectPortal', () => {
   it('recognizes the parent portal', () => {
@@ -32,16 +32,16 @@ describe('shadowCss', () => {
   });
 });
 
-describe('bookmarkletFor', () => {
-  it('loads ggl.js from the site and toggles when already open', () => {
-    const b = bookmarkletFor('https://someone.github.io/genesisgradelens/');
+describe('bookmarkletFromCode', () => {
+  const code = "(function(){var a='x?y#z%';if(window.__t)return;window.__t=a})();\n";
+  const b = bookmarkletFromCode(code);
+
+  it('is a javascript: URL with nothing browsers rewrite', () => {
     expect(b.startsWith('javascript:')).toBe(true);
-    expect(b).toContain('"https://someone.github.io/genesisgradelens/ggl.js"');
-    expect(b).toContain('window.__ggl.toggle()');
+    expect(b.slice('javascript:'.length)).not.toMatch(/[?#"\s]/);
   });
 
-  it('has no characters browsers rewrite when saving a bookmark', () => {
-    const body = bookmarkletFor('https://someone.github.io/genesisgradelens/').slice('javascript:'.length);
-    expect(body).not.toMatch(/[?#%]/);
+  it('decodes back to exactly the code', () => {
+    expect(decodeURIComponent(b.slice('javascript:'.length))).toBe(code.trim());
   });
 });

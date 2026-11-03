@@ -36,16 +36,11 @@ export function shadowCss(css: string): string {
 }
 
 /**
- * The bookmark itself: loads (or toggles) the app from the GenesisGradeLens site.
- * Deliberately contains no "?", "#" or "%": browsers treat text after "?" as a query and
- * percent-encode quotes in it when saving the bookmark, which makes it look broken.
- * (GitHub Pages caches ggl.js for 10 minutes, so no cache-busting parameter is needed.)
+ * The bookmark itself: the whole app inside a javascript: URL. Genesis's signed-in pages only
+ * allow scripts from Genesis (plus inline code), so the app can't be loaded from elsewhere.
+ * Percent-encoding everything keeps "?", "#" and "%" out of the raw URL, so browsers store it
+ * unchanged; they decode it again before running it.
  */
-export function bookmarkletFor(siteBase: string): string {
-  const src = new URL('ggl.js', siteBase).href;
-  return (
-    'javascript:(()=>{if(window.__ggl){window.__ggl.toggle();return}' +
-    `var s=document.createElement('script');s.src=${JSON.stringify(src)};` +
-    'document.body.appendChild(s)})()'
-  );
+export function bookmarkletFromCode(code: string): string {
+  return 'javascript:' + encodeURIComponent(code.trim());
 }
