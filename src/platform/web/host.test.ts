@@ -39,4 +39,9 @@ describe('bookmarkletFor', () => {
     expect(b).toContain('"https://someone.github.io/genesisgradelens/ggl.js"');
     expect(b).toContain('window.__ggl.toggle()');
   });
+
+  it('has no characters browsers rewrite when saving a bookmark', () => {
+    const body = bookmarkletFor('https://someone.github.io/genesisgradelens/').slice('javascript:'.length);
+    expect(body).not.toMatch(/[?#%]/);
+  });
 });

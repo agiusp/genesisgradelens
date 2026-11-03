@@ -35,12 +35,17 @@ export function shadowCss(css: string): string {
   return css.replace(/:root/g, ':host').replace(/(^|[\s,}])body(\s*[{,])/g, '$1.ggl-body$2');
 }
 
-/** The bookmark itself: loads (or toggles) the app from the GenesisGradeLens site. */
+/**
+ * The bookmark itself: loads (or toggles) the app from the GenesisGradeLens site.
+ * Deliberately contains no "?", "#" or "%": browsers treat text after "?" as a query and
+ * percent-encode quotes in it when saving the bookmark, which makes it look broken.
+ * (GitHub Pages caches ggl.js for 10 minutes, so no cache-busting parameter is needed.)
+ */
 export function bookmarkletFor(siteBase: string): string {
   const src = new URL('ggl.js', siteBase).href;
   return (
     'javascript:(()=>{if(window.__ggl){window.__ggl.toggle();return}' +
-    `var s=document.createElement('script');s.src=${JSON.stringify(src)}+'?v='+Math.floor(Date.now()/36e5);` +
+    `var s=document.createElement('script');s.src=${JSON.stringify(src)};` +
     'document.body.appendChild(s)})()'
   );
 }
