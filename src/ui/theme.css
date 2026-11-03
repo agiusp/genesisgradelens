@@ -1,0 +1,91 @@
+/*
+ * GenesisGradeLens theme.
+ * Palette taken from the Summit Genesis parent portal (2026-11-02) so the app feels familiar
+ * next to Genesis. GenesisGradeLens keeps its own logo so it isn't mistaken for the official Genesis app.
+ * Every color used by the UI comes from these tokens; change the look here only.
+ */
+
+:root {
+  /* Genesis source values */
+  --genesis-navy: #001c35; /* sidebar + top bar */
+  --genesis-navy-2: #00315c; /* student selector pill */
+  --genesis-cyan: #25add3; /* sidebar links */
+  --genesis-link: #019bc6; /* page links */
+  --genesis-th-top: #036b9a; /* table header gradient */
+  --genesis-th-bottom: #005275;
+  --genesis-zebra: #e5f6fa; /* alternate table rows */
+  --genesis-page: #f7f7f7;
+  --genesis-card-shadow: #e3e3e3;
+
+  /* Semantic tokens (the UI uses only these) */
+  --bg: var(--genesis-page);
+  --surface: #ffffff;
+  --surface-alt: var(--genesis-zebra);
+  --text: #1a1a1a;
+  --muted: #5b6672;
+  --border: #dfe3e8;
+  --shadow: 1px 1px 3px var(--genesis-card-shadow);
+
+  --chrome-bg: var(--genesis-navy); /* top bar / nav */
+  --chrome-bg-2: var(--genesis-navy-2);
+  --chrome-text: #ffffff;
+  --chrome-link: var(--genesis-cyan);
+
+  --accent: var(--genesis-link);
+  --accent-strong: #017aa0; /* darker for text on white (contrast) */
+  --accent-text: #ffffff;
+  --table-head: linear-gradient(var(--genesis-th-top), var(--genesis-th-bottom));
+  --table-head-text: #ffffff;
+
+  /* Grade status colors (Genesis uses bright green for the current period; softened here) */
+  --good: #1f8a3b;
+  --warn: #b26a00;
+  --bad: #c4314b;
+  --current-period: #d9f7d9;
+
+  --radius: 7px;
+  --font: 'Open Sans', Arial, Helvetica, sans-serif;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #0a1622;
+    --surface: #10243a;
+    --surface-alt: #13304c;
+    --text: #e6edf3;
+    --muted: #9db0c3;
+    --border: #1f3a57;
+    --shadow: none;
+    --chrome-bg: #00101f;
+    --chrome-bg-2: var(--genesis-navy-2);
+    --accent: var(--genesis-cyan);
+    --accent-strong: var(--genesis-cyan);
+    --accent-text: #001c35;
+    --good: #4cc26a;
+    --warn: #f0a640;
+    --bad: #ff6b81;
+    --current-period: #17402a;
+    color-scheme: dark;
+  }
+}
+
+/* Grade dial bands, F → A. Validated (dataviz validate_palette.js) against #ffffff light and
+   #10243a dark surfaces; every band also carries its letter, so color is never the only cue. */
+:root {
+  --dial-f: #d64545;
+  --dial-d: #9b59c9;
+  --dial-c: #c98a00;
+  --dial-b: #3a7fd0;
+  --dial-a: #23955a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --dial-f: #e05a5a;
+    --dial-d: #a46fd6;
+    --dial-c: #b9810b;
+    --dial-b: #4a92df;
+    --dial-a: #33a466;
+  }
+}

@@ -1,0 +1,10 @@
+# Real Genesis pages contain student names, grades and IDs. Never commit them.
+fixtures/raw/
+
+node_modules/
+dist/
+*.zip
+.DS_Store
+.env*
+release/
+site/

@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "GenesisGradeLens",
+  "version": "0.1.0",
+  "description": "See inside your child's Genesis grades: breakdowns, checks, and what-if projections.",
+  "action": {
+    "default_title": "Open GenesisGradeLens",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://parents.summit.k12.nj.us/*",
+    "https://students.summit.k12.nj.us/*"
+  ],
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  }
+}

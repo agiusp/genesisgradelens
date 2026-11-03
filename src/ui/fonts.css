@@ -1,0 +1,5 @@
+/* Bundled Open Sans for the extension page. The web (bookmark) build runs inside Genesis,
+   which already loads Open Sans, so it doesn't include these. */
+@import '@fontsource/open-sans/400.css';
+@import '@fontsource/open-sans/600.css';
+@import '@fontsource/open-sans/700.css';

@@ -1,0 +1,777 @@
+/* Layout and components. Mobile-first: designed for phone width, widened for desktop.
+   Colors and fonts come from theme.css tokens only. */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.5 var(--font);
+  -webkit-text-size-adjust: 100%;
+}
+
+.shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: max(12px, env(safe-area-inset-top)) 16px 12px;
+  background: var(--chrome-bg);
+  color: var(--chrome-text);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand img {
+  width: 28px;
+  height: 28px;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.district {
+  padding: 4px 12px;
+  border-radius: var(--radius) 0 0 var(--radius);
+  background: var(--chrome-bg-2);
+  color: var(--chrome-link);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.content {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.card h2 {
+  margin: 0 0 8px;
+  font-size: 1.125rem;
+}
+
+.card p {
+  margin: 0 0 12px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+a {
+  color: var(--accent-strong);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* 44px minimum touch target. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-text);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button.secondary {
+  background: transparent;
+  color: var(--accent-strong);
+}
+
+/* Genesis-style data table; used by grade views. */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.table th {
+  background: var(--table-head);
+  color: var(--table-head-text);
+  font-weight: 700;
+  text-align: left;
+  padding: 8px 10px;
+}
+
+.table th:first-child {
+  border-top-left-radius: var(--radius);
+}
+
+.table th:last-child {
+  border-top-right-radius: var(--radius);
+}
+
+.table td {
+  padding: 8px 10px;
+}
+
+.table tbody tr:nth-child(odd) {
+  background: var(--surface-alt);
+}
+
+@media (min-width: 720px) {
+  .content {
+    padding: 24px;
+  }
+}
+
+/* ---------- Grade views ---------- */
+
+.small {
+  font-size: 0.8125rem;
+}
+
+h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+h4 {
+  margin: 12px 0 8px;
+  font-size: 0.9375rem;
+}
+
+.content > * + * {
+  margin-top: 12px;
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding: 8px 16px 0;
+  background: var(--chrome-bg);
+}
+
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 44px;
+  padding: 6px 14px 8px;
+  border: 0;
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: transparent;
+  color: var(--chrome-link);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.tab-name {
+  font-weight: 700;
+}
+
+.tab-school {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.link-button {
+  min-height: 44px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  color: var(--accent-strong);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.link-button.small {
+  min-height: auto;
+  margin-left: 8px;
+}
+
+.course-list,
+.categories,
+.assignments {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.course-list {
+  display: grid;
+  gap: 10px;
+}
+
+@media (min-width: 720px) {
+  .course-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.course-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.course-card:hover,
+.course-card:focus-visible {
+  border-color: var(--accent);
+}
+
+.course-main {
+  min-width: 0;
+}
+
+.course-name {
+  font-weight: 700;
+}
+
+.course-grades {
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.grade-big {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.letter {
+  margin-left: 4px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.calc {
+  color: var(--accent-strong);
+  font-weight: 600;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--surface-alt);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge.good {
+  color: var(--good);
+}
+
+.badge.warn {
+  color: var(--warn);
+}
+
+.badge.bad {
+  color: var(--bad);
+}
+
+.other summary {
+  min-height: 32px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.other ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+.back {
+  padding-left: 0;
+}
+
+.detail-title {
+  margin: 0;
+}
+
+.grade-compare {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: 8px;
+  margin: 12px 0 4px;
+}
+
+.grade-box {
+  padding: 10px;
+  border-radius: var(--radius);
+  background: var(--surface-alt);
+}
+
+.grade-box.highlight {
+  outline: 2px solid var(--accent);
+}
+
+.up {
+  color: var(--good);
+}
+
+.down {
+  color: var(--bad);
+}
+
+.mode-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 12px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.mode-switch button {
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--accent-strong);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mode-switch button.active {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+.category + .category {
+  margin-top: 12px;
+}
+
+.cat-head {
+  display: flex;
+  justify-content: space-between;
+}
+
+.bar {
+  height: 8px;
+  margin: 4px 0;
+  border-radius: 4px;
+  background: var(--surface-alt);
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: var(--table-head);
+}
+
+.assignment {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+}
+
+.assignment.hypo {
+  background: var(--surface-alt);
+  margin: 0 -8px;
+  padding: 10px 8px;
+}
+
+.a-main {
+  min-width: 0;
+}
+
+.a-title {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.a-score {
+  flex-shrink: 0;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.status-missing,
+.status-incomplete {
+  color: var(--bad);
+  font-weight: 600;
+}
+
+.status-ungraded,
+.status-exempt,
+.status-absent,
+.status-rubric {
+  color: var(--muted);
+}
+
+.score-input {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+input,
+select {
+  min-height: 44px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 16px; /* prevents iOS zoom on focus */
+}
+
+.score-input input {
+  width: 5.5em;
+  text-align: right;
+}
+
+.add-form,
+.solver {
+  display: grid;
+  gap: 10px;
+}
+
+.add-form label,
+.solver label {
+  display: grid;
+  gap: 4px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.solver {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.solver select {
+  width: 100%;
+}
+
+.solver-answer {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.whatif > * + * {
+  margin-top: 10px;
+}
+
+.range {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.range-pick {
+  display: grid;
+  gap: 4px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.range-pick select {
+  width: 100%;
+}
+
+.range-scroll {
+  max-height: 420px;
+  overflow-y: auto;
+  border-radius: var(--radius);
+}
+
+.range-table th {
+  position: sticky;
+  top: 0;
+}
+
+.range-table td:last-child,
+.range-table th:last-child {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.range-table tr.boundary td {
+  border-top: 2px solid var(--accent);
+}
+
+.badge.mult {
+  border: 1px solid var(--warn);
+  background: transparent;
+  color: var(--warn);
+}
+
+.mult-hint {
+  margin: 0;
+}
+
+.mult-hint.notice {
+  padding: 8px 10px;
+  border-left: 3px solid var(--warn);
+  border-radius: 4px;
+  background: var(--surface-alt);
+}
+
+.mult-hint .badge {
+  margin-right: 4px;
+}
+
+/* ---------- Grade dial ---------- */
+
+.dial {
+  margin: 4px 0 0;
+  padding: 12px 8px 8px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.dial svg {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.dial-band {
+  fill: none;
+  stroke-width: 18;
+}
+
+.band-a { stroke: var(--dial-a); }
+.band-b { stroke: var(--dial-b); }
+.band-c { stroke: var(--dial-c); }
+.band-d { stroke: var(--dial-d); }
+.band-f { stroke: var(--dial-f); }
+
+.dial-letter {
+  fill: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.dial-tick line {
+  stroke: var(--muted);
+  stroke-width: 1;
+}
+
+.dial-tick text {
+  fill: var(--muted);
+  font-size: 9px;
+}
+
+.dial-up,
+.dial-down {
+  fill: none;
+  stroke-width: 10;
+  stroke-linecap: round;
+  opacity: 0.9;
+}
+
+.dial-up { stroke: var(--good); }
+.dial-down { stroke: var(--bad); }
+
+.dial-end {
+  stroke: var(--surface);
+  stroke-width: 2;
+}
+
+.dial-end.up { fill: var(--good); }
+.dial-end.down { fill: var(--bad); }
+
+.dial-needle {
+  stroke: var(--text);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.dial-needle.whatif {
+  stroke: var(--accent);
+  stroke-dasharray: 5 4;
+}
+
+.dial-hub {
+  fill: var(--text);
+  stroke: var(--surface);
+  stroke-width: 2;
+}
+
+.dial-caption {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  text-align: center;
+}
+
+.dial-now {
+  display: grid;
+  line-height: 1.2;
+}
+
+.dial-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.dial-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 14px;
+}
+
+.swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  vertical-align: baseline;
+}
+
+.swatch.up { background: var(--good); }
+.swatch.down { background: var(--bad); }
+.swatch.whatif {
+  border: 2px dashed var(--accent);
+  background: transparent;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topbar-button {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--chrome-link);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--chrome-link);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ---------- Web build: sign-in gate ---------- */
+
+.setup-banner {
+  padding: 8px 16px;
+  background: var(--warn);
+  color: #1a1a1a;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.gate {
+  display: grid;
+  place-items: center;
+  min-height: 100%;
+  padding: 24px 16px;
+}
+
+.gate-card {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  max-width: 380px;
+}
+
+.gate-card label {
+  display: grid;
+  gap: 4px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.gate-brand img {
+  width: 32px;
+  height: 32px;
+}
+
+.gate-brand h2 {
+  margin: 0;
+}
+
+.gate-wait {
+  margin: 24px 16px;
+}

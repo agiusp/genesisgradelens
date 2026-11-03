@@ -1,0 +1,60 @@
+.site {
+  max-width: 720px;
+}
+
+.site ol {
+  margin: 8px 0 12px;
+  padding-left: 22px;
+}
+
+.site li + li {
+  margin-top: 8px;
+}
+
+.site h3 {
+  margin-top: 16px;
+}
+
+kbd {
+  padding: 1px 6px;
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  background: var(--surface-alt);
+  font: inherit;
+  font-size: 0.8125rem;
+}
+
+.bookmarklet {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 700;
+  text-decoration: none;
+  cursor: grab;
+}
+
+textarea {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-alt);
+  color: var(--text);
+  font: 12px/1.4 ui-monospace, Menlo, monospace;
+}
+
+details summary {
+  min-height: 32px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.small-btn {
+  min-height: 36px;
+}
