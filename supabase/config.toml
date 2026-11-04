@@ -1,0 +1,7 @@
+# Only used to deploy the issue-license function (see docs/hosting-setup.md).
+project_id = "genesisgradelens"
+
+[functions.issue-license]
+# The function checks the caller's sign-in itself (via Supabase Auth), which also lets the
+# browser's CORS preflight through.
+verify_jwt = false

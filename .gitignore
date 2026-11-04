@@ -8,3 +8,8 @@ dist/
 .env*
 release/
 site/
+
+# Bookmark-pass private key (goes to Supabase as a secret, never to git)
+.secrets/
+supabase/.temp/
+supabase/.branches/

@@ -1,6 +1,9 @@
 import { render } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
+import { formatDate } from '../src/auth/license';
+import type { Session } from '../src/auth/supabase';
 import { AUTH } from '../src/config/auth';
+import { LICENSE_PUBLIC_KEY } from '../src/config/license';
 import { bookmarkletFromCode } from '../src/platform/web/host';
 import { AuthGate } from '../src/ui/AuthGate';
 import '../src/ui/fonts.css';
@@ -11,23 +14,46 @@ import './site.css';
 declare const __GGL_VERSION__: string;
 const ACCOUNT_URL = new URL('account.html', location.href).href;
 
-/** Builds the all-in-one bookmark from this site's copy of the app (ggl.js). */
-function useBookmark() {
-  const [state, setState] = useState<{ code: string; kb: number } | { error: string } | null>(null);
+type BookmarkState = { code: string; kb: number; exp?: number } | { error: string } | null;
+
+/** Asks the GenesisGradeLens Supabase function for this user's signed pass (see src/auth/license.ts). */
+async function fetchPass(session: Session): Promise<{ license: string; exp: number }> {
+  const res = await fetch(`${AUTH!.supabaseUrl}/functions/v1/issue-license`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${session.accessToken}`, apikey: AUTH!.anonKey },
+  }).catch(() => {
+    throw new Error("couldn't reach the sign-in service. If this keeps happening, it may be paused; let the site owner know");
+  });
+  const body = (await res.json().catch(() => ({}))) as { license?: string; exp?: number; error?: string };
+  if (!res.ok || !body.license || !body.exp) throw new Error(body.error || `sign-in service error ${res.status}`);
+  return { license: body.license, exp: body.exp };
+}
+
+/**
+ * Builds the all-in-one bookmark from this site's copy of the app (ggl.js). Once sign-in is set
+ * up, the user's personal pass goes at the front, where the app checks it.
+ */
+function useBookmark(session: Session | null) {
+  const [state, setState] = useState<BookmarkState>(null);
   useEffect(() => {
-    fetch('./ggl.js', { cache: 'no-cache' })
-      .then((r) => (r.ok ? r.text() : Promise.reject(new Error(`ggl.js: ${r.status}`))))
-      .then((js) => {
-        const code = bookmarkletFromCode(js);
-        setState({ code, kb: Math.round(code.length / 1024) });
+    const needsPass = !!(AUTH && LICENSE_PUBLIC_KEY && session);
+    Promise.all([
+      fetch('./ggl.js', { cache: 'no-cache' }).then((r) => (r.ok ? r.text() : Promise.reject(new Error(`ggl.js: ${r.status}`)))),
+      needsPass ? fetchPass(session!) : Promise.resolve(null),
+    ])
+      .then(([js, pass]) => {
+        const code = bookmarkletFromCode((pass ? `window.__gglLicense=${JSON.stringify(pass.license)};` : '') + js);
+        setState({ code, kb: Math.round(code.length / 1024), exp: pass?.exp });
       })
-      .catch((e) => setState({ error: String(e) }));
-  }, []);
+      .catch((e) => setState({ error: e instanceof Error ? e.message : String(e) }));
+  }, [session]);
   return state;
 }
 
-function Bookmark({ email, onSignOut }: { email: string | null; onSignOut: () => void }) {
-  const bm = useBookmark();
+function Bookmark({ session, onSignOut }: { session: Session | null; onSignOut: () => void }) {
+  const email = session?.email ?? null;
+  const bm = useBookmark(session);
+  const exp = bm && 'exp' in bm ? bm.exp : undefined;
   const [copied, setCopied] = useState(false);
   const code = bm && 'code' in bm ? bm.code : '';
 
@@ -56,6 +82,12 @@ function Bookmark({ email, onSignOut }: { email: string | null; onSignOut: () =>
         <h2>1. Add the bookmark</h2>
         {!bm && <p class="muted">Preparing your bookmark…</p>}
         {bm && 'error' in bm && <p class="status-missing">Couldn't prepare the bookmark ({bm.error}). Reload the page to try again.</p>}
+        {code && exp && (
+          <p class="small">
+            This bookmark is <strong>yours</strong> ({email}) and works until <strong>{formatDate(exp)}</strong>. Before then, come back,
+            sign in and replace it with a fresh one. Please don't share it; anyone who needs access can ask for their own account.
+          </p>
+        )}
         {code && (
           <>
             <h3>Chromebook or computer (Chrome)</h3>
@@ -160,7 +192,7 @@ function Install() {
         </section>
 
         <AuthGate config={AUTH} accountUrl={ACCOUNT_URL} iconUrl="./icons/icon-48.png">
-          {(session, signOut) => <Bookmark email={session?.email ?? null} onSignOut={signOut} />}
+          {(session, signOut) => <Bookmark session={session} onSignOut={signOut} />}
         </AuthGate>
 
         <p class="muted small">
