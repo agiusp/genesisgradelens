@@ -1,7 +1,7 @@
 import { render } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { formatDate } from '../src/auth/license';
-import type { Session } from '../src/auth/supabase';
+import { loadSession, type Session } from '../src/auth/supabase';
 import { AUTH } from '../src/config/auth';
 import { LICENSE_PUBLIC_KEY } from '../src/config/license';
 import { bookmarkletFromCode } from '../src/platform/web/host';
@@ -160,8 +160,8 @@ function Bookmark({ session, onSignOut }: { session: Session | null; onSignOut: 
           here and replace the bookmark.
         </p>
         <p class="muted small">
-          On a school Chromebook, if the bookmark does nothing, the school may block bookmarks like this. Please don't try to work around
-          school settings; use a home device instead.
+          GenesisGradeLens is meant for personal devices. School laptops often block it; please don't try to work around school
+          settings.
         </p>
       </section>
     </>
@@ -190,6 +190,35 @@ function Install() {
             tab and doesn't send them anywhere. Your Genesis password never leaves Genesis.
           </p>
         </section>
+
+        <details class="card" open={!loadSession()}>
+          <summary>
+            <strong>New here? How to get set up</strong>
+          </summary>
+          <p class="muted small">
+            Use a <strong>personal</strong> computer, tablet or phone. School laptops usually block the GenesisGradeLens sign-in.
+          </p>
+          <ol>
+            <li>
+              <strong>Get an invitation.</strong> GenesisGradeLens is invite-only. Ask the person who shared this page with you to add
+              your email.
+            </li>
+            <li>
+              <strong>Choose a password.</strong> Open the invitation email (check spam) and click the link. Pick a password for
+              GenesisGradeLens. Use a different one from your Genesis password. If you were given a password instead, skip this step.
+            </li>
+            <li>
+              <strong>Sign in below</strong> and add the ★ GradeLens bookmark using the steps shown.
+            </li>
+            <li>
+              <strong>Use it:</strong> sign in to Genesis as usual, then click ★ GradeLens on any Genesis page.
+            </li>
+            <li>
+              <strong>Every 30 days</strong>, come back here, sign in, and replace the bookmark with a fresh one. The app reminds you in
+              its last 5 days.
+            </li>
+          </ol>
+        </details>
 
         <AuthGate config={AUTH} accountUrl={ACCOUNT_URL} iconUrl="./icons/icon-48.png">
           {(session, signOut) => <Bookmark session={session} onSignOut={signOut} />}
