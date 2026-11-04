@@ -153,8 +153,9 @@ function mount(token?: string) {
           <section class="card">
             <h2>Open Genesis first</h2>
             <p>
-              Sign in to Genesis (for Summit students: <strong>students.summit.k12.nj.us</strong>), then click the ★ GradeLens bookmark
-              again on that page.
+              This page is <strong>{location.host || location.href.slice(0, 40)}</strong>, not Genesis. Switch to your signed-in Genesis tab
+              (parents: <strong>parents.summit.k12.nj.us</strong>, students: <strong>students.summit.k12.nj.us</strong>) and click the ★
+              GradeLens bookmark there.
             </p>
             <button class="button" onClick={close}>
               OK
