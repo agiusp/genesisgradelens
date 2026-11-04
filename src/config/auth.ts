@@ -10,6 +10,8 @@ export interface AuthConfig {
   anonKey: string;
 }
 
-// Fill these in after creating the Supabase project. While null, the app shows a
-// "sign-in not set up" banner and does not restrict access.
-export const AUTH: AuthConfig | null = null;
+// While null, the app shows a "sign-in not set up" banner and does not restrict access.
+export const AUTH: AuthConfig | null = {
+  supabaseUrl: 'https://qjzpzansjqifqpwgncba.supabase.co',
+  anonKey: 'sb_publishable_8U28E1-a28ceitYjQnNS4A_5buD1P8w',
+};
